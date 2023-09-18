@@ -5,7 +5,7 @@
   (paper "A4")
 
   (lib_symbols
-    (symbol "Akbar:BTT_TMC2209" (in_bom yes) (on_board yes)
+    (symbol "Ackbar:BTT_TMC2209" (in_bom yes) (on_board yes)
       (property "Reference" "U" (at 0 0 0)
         (effects (font (size 1.27 1.27)))
       )
@@ -102,7 +102,7 @@
         )
       )
     )
-    (symbol "Akbar:Buck_Regulator" (in_bom yes) (on_board yes)
+    (symbol "Ackbar:Buck_Regulator" (in_bom yes) (on_board yes)
       (property "Reference" "U" (at 0 0 0)
         (effects (font (size 1.27 1.27)))
       )
@@ -143,7 +143,7 @@
         )
       )
     )
-    (symbol "Akbar:Waveshare_ESP32-S3_Pico" (in_bom yes) (on_board yes)
+    (symbol "Ackbar:Waveshare_ESP32-S3_Pico" (in_bom yes) (on_board yes)
       (property "Reference" "U" (at 0 0 0)
         (effects (font (size 1.27 1.27)))
       )
@@ -1304,7 +1304,7 @@
     (pin "1" (uuid 447b87eb-7066-471e-83d8-cf69264eaace))
     (pin "2" (uuid 6de00f50-a920-42f7-bb62-0443edc6806d))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "J5") (unit 1)
         )
@@ -1333,7 +1333,7 @@
     (pin "4" (uuid 83d9f71d-7075-489b-a02b-fcf5d1988c15))
     (pin "5" (uuid 9860dd47-2221-477a-94d0-e53bdf703bca))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "J2") (unit 1)
         )
@@ -1341,7 +1341,7 @@
     )
   )
 
-  (symbol (lib_id "Akbar:Waveshare_ESP32-S3_Pico") (at 111.76 38.1 0) (unit 1)
+  (symbol (lib_id "Ackbar:Waveshare_ESP32-S3_Pico") (at 111.76 38.1 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 479d140f-932b-4cd7-bfb8-2e4abf899579)
     (property "Reference" "U1" (at 111.76 30.48 0)
@@ -1350,7 +1350,7 @@
     (property "Value" "ESP32-S3 Pico" (at 111.76 31.75 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Akbar:Waveshare ESP32-S3 Pico" (at 111.76 38.1 0)
+    (property "Footprint" "Ackbar:Waveshare ESP32-S3 Pico" (at 111.76 38.1 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 111.76 38.1 0)
@@ -1397,7 +1397,7 @@
     (pin "8" (uuid be1d5d75-7cf8-4fef-a1b3-88f158970892))
     (pin "9" (uuid b1714033-5563-4b34-86f7-330a7593308a))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "U1") (unit 1)
         )
@@ -1405,7 +1405,7 @@
     )
   )
 
-  (symbol (lib_id "Akbar:Buck_Regulator") (at 111.76 153.67 180) (unit 1)
+  (symbol (lib_id "Ackbar:Buck_Regulator") (at 111.76 153.67 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5609b612-86e0-4b6e-a042-d2da451725af)
     (property "Reference" "U2" (at 100.33 153.035 0)
@@ -1414,7 +1414,7 @@
     (property "Value" "VREG" (at 111.76 153.67 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Akbar:Buck Regulator" (at 111.76 153.67 0)
+    (property "Footprint" "Ackbar:Buck Regulator" (at 111.76 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 111.76 153.67 0)
@@ -1425,7 +1425,7 @@
     (pin "3" (uuid 09183270-92e9-43d9-bd4c-894739ea9528))
     (pin "4" (uuid 9378c716-280d-4697-8c88-5073d2df008d))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "U2") (unit 1)
         )
@@ -1433,7 +1433,7 @@
     )
   )
 
-  (symbol (lib_id "Akbar:BTT_TMC2209") (at 111.76 109.22 0) (unit 1)
+  (symbol (lib_id "Ackbar:BTT_TMC2209") (at 111.76 109.22 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5bdf7aca-650f-47ff-9464-a603f1763c5d)
     (property "Reference" "U3" (at 111.76 138.43 0)
@@ -1442,7 +1442,7 @@
     (property "Value" "TMC2209" (at 111.76 133.35 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Akbar:BTT TMC2209" (at 111.76 109.22 0)
+    (property "Footprint" "Ackbar:BTT TMC2209" (at 111.76 109.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 111.76 109.22 0)
@@ -1467,7 +1467,7 @@
     (pin "8" (uuid 0d37b1e4-540f-417c-832e-f97c29796f6f))
     (pin "9" (uuid 6fdc2088-2218-47e3-a347-498dc03823a4))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "U3") (unit 1)
         )
@@ -1496,7 +1496,7 @@
     (pin "4" (uuid c44348c1-0a18-4db7-8497-30c8a8def156))
     (pin "5" (uuid 0c75b8f9-bf07-4007-83f9-66656110dd3c))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "J1") (unit 1)
         )
@@ -1523,7 +1523,7 @@
     (pin "2" (uuid f09b5f2d-161b-4181-a762-d105b7d0acc9))
     (pin "3" (uuid 1dfd757f-ba1c-4fde-850b-775b6b730996))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "J3") (unit 1)
         )
@@ -1551,7 +1551,7 @@
     (pin "3" (uuid 18b93a17-4ee1-4fcd-bf6a-f376a96f2081))
     (pin "4" (uuid 0702b393-fb2d-4d61-8405-cd69bcc3774f))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "J4") (unit 1)
         )
@@ -1583,7 +1583,7 @@
     (pin "7" (uuid 7a9a3058-6095-42ef-834e-4b03c850232d))
     (pin "8" (uuid 1f146b8f-5d7f-4567-a362-231abe1dda6c))
     (instances
-      (project "Akbar"
+      (project "Ackbar"
         (path "/10d22af5-0d05-45a6-b4a8-43aad0d497f4"
           (reference "J6") (unit 1)
         )

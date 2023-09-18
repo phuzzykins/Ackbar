@@ -392,7 +392,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Akbar.kicad_pro",
+    "filename": "Ackbar.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -474,7 +474,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "Akbar.step",
+      "step": "Ackbar.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
