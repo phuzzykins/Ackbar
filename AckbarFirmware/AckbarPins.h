@@ -1,6 +1,8 @@
 #ifndef __ACKBAR_PINS_H__
 #define __ACKBAR_PINS_H__
 
+#include "Arduino.h"
+
 #define STP_MS1   17
 #define STP_MS2   18
 #define STP_MS3   33

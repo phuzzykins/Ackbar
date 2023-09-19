@@ -13,13 +13,18 @@
 class Ackbar::Configuration
 {
   public:
+    void      fromStream(Stream stream);
+    void      toStream(Stream stream);
 
   protected:
 	  char      board_name[BOARD_NAME_LENGTH];
 	  uint16_t  motor_rpm;
 	  uint16_t  motor_acceleration;
 	  uint16_t  motor_deceleration;
+    uint16_t  motor_microsteps;
+    uint16_t  motor_steps_per_rev;
 	  uint32_t  tof_timing_budget_us;
+    uint16_t  trap_dwell_time_ms;
 	  char      wifi_ssid[WIFI_SSID_LENGTH];
 	  char      wifi_password[WIFI_PASSWORD_LENGTH];
 	  uint32_t  wifi_timeout_ms;
