@@ -48,8 +48,8 @@
 #define STEPPER_MICROSTEPS      64
 #define STEPPER_STEPS_PER_REV   750
 #define RUN_CURRENT_PERCENT     100
-#define HOLD_CURRENT_PERCENT    25
-#define STALL_GUARD_THRESHOLD   50
+#define HOLD_CURRENT_PERCENT    100
+#define STALL_GUARD_THRESHOLD   1
 
 #define SDA_PIN                 8
 #define SCL_PIN                 9
@@ -155,8 +155,6 @@ ackbar_config_data_t        configData;
 ackbar_calibration_data_t   calibrationData;
 ackbar_state_t              currentState = ACKBAR_STATE_RESET;
 
-
-
 void change_state(ackbar_state_t newState)
 {
   for(int i = 0; i < ACKBAR_STATE_LAST; i++)
@@ -174,30 +172,36 @@ void change_state(ackbar_state_t newState)
   currentState = newState;
 }
 
+void stepperDiagInterrupt()
+{
+  Serial.println("STALLGUARD!");
+}
+
 void init_motor()
 {
   Serial.println("Initializing Motor");
 
   pinMode(STP_MS1, OUTPUT);
   pinMode(STP_MS2, OUTPUT);
+  pinMode(STP_DIAG, INPUT_PULLUP);
 
-  // TMC2209 64 microsteps
-  //digitalWrite(STP_MS1, LOW);
-  //digitalWrite(STP_MS2, HIGH);
+  attachInterrupt(digitalPinToInterrupt(STP_DIAG), &stepperDiagInterrupt, FALLING);
 
-  // TMC2209 Address 0
+
   digitalWrite(STP_MS1, LOW);
   digitalWrite(STP_MS2, LOW);
 
   Serial2.begin(115200, SERIAL_8N1, STP_UART_RX, STP_UART_TX);
 
   stepperDriver.setup(serial_stream);
-  stepperDriver.setHardwareEnablePin(STP_EN);
+  stepperDriver.enableAutomaticCurrentScaling();
   stepperDriver.setMicrostepsPerStep(STEPPER_MICROSTEPS);
   stepperDriver.setRunCurrent(RUN_CURRENT_PERCENT);
   stepperDriver.setHoldCurrent(HOLD_CURRENT_PERCENT);
   stepperDriver.setStandstillMode(stepperDriver.STRONG_BRAKING);
   stepperDriver.setStallGuardThreshold(STALL_GUARD_THRESHOLD);
+  stepperDriver.disableCoolStep();
+  stepperDriver.enable();
 
   stepperMotor.setEnableActiveState(LOW);
   stepperMotor.begin(configData.motor_rpm, STEPPER_MICROSTEPS);
@@ -741,7 +745,9 @@ void init_msc()
 
 void init_filesystem()
 {
-  FFat.begin(true);
+  //FFat.format(true);
+
+  FFat.begin();
 
   Serial.printf("FFAT Free space: %10u\n", FFat.freeBytes());
 
@@ -762,11 +768,6 @@ void state_starting()
   calibrate();
 
   change_state(ACKBAR_STATE_ARMING);
-
-  while(1)
-  {
-    delay(10);
-  }
 }
 
 void state_trapping()
@@ -788,6 +789,11 @@ void state_reporting()
 int consecutive_samples = 0;
 void state_armed()
 {
+
+  flip();
+  delay(1000);
+  return;
+
   uint16_t distance_mm = tofDevice.readRangeSingleMillimeters();
 
   if(tofDevice.timeoutOccurred())
