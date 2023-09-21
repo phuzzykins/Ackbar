@@ -174,7 +174,7 @@ void change_state(ackbar_state_t newState)
 
 void stepperDiagInterrupt()
 {
-  Serial.println("STALLGUARD!");
+  //Serial.println("STALLGUARD!");
 }
 
 void init_motor()
@@ -187,17 +187,18 @@ void init_motor()
 
   attachInterrupt(digitalPinToInterrupt(STP_DIAG), &stepperDiagInterrupt, FALLING);
 
-
   digitalWrite(STP_MS1, LOW);
   digitalWrite(STP_MS2, LOW);
 
   Serial2.begin(115200, SERIAL_8N1, STP_UART_RX, STP_UART_TX);
 
   stepperDriver.setup(serial_stream);
-  stepperDriver.enableAutomaticCurrentScaling();
+
   stepperDriver.setMicrostepsPerStep(STEPPER_MICROSTEPS);
+
   stepperDriver.setRunCurrent(RUN_CURRENT_PERCENT);
   stepperDriver.setHoldCurrent(HOLD_CURRENT_PERCENT);
+
   stepperDriver.setStandstillMode(stepperDriver.STRONG_BRAKING);
   stepperDriver.setStallGuardThreshold(STALL_GUARD_THRESHOLD);
   stepperDriver.disableCoolStep();
@@ -255,8 +256,10 @@ void init_tof_sensor()
   Serial.println("Initializing ToF sensor");
 
   pinMode(TOF_XSHUT, OUTPUT);
+
+  // This chip occasionally needs to be reset after powerup
   digitalWrite(TOF_XSHUT, LOW);
-  delay(1);
+  delay(10);
   digitalWrite(TOF_XSHUT, HIGH);
   delay(10);
 
@@ -789,11 +792,6 @@ void state_reporting()
 int consecutive_samples = 0;
 void state_armed()
 {
-
-  flip();
-  delay(1000);
-  return;
-
   uint16_t distance_mm = tofDevice.readRangeSingleMillimeters();
 
   if(tofDevice.timeoutOccurred())
@@ -873,7 +871,7 @@ void state_reset()
 
 void state_error()
 {
-
+  delay(500);
 }
 
 void setup()
