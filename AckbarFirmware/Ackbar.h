@@ -2,28 +2,31 @@
 #define __ACKBAR_H__
 
 #include "AckbarPins.h"
+#include "AckbarEvent.h"
+#include "AckbarEventConsumer.h"
+#include "AckbarTrigger.h"
+#include "AckbarMechanism.h"
 
-#include <BasicStepperDriver.h>
-#include <VL53L0X.h>
-#include <TMC2209.h>
-#include <SparkFun_I2C_GPS_Arduino_Library.h>
-#include <Adafruit_EPD.h>
-#include <USBMSC.h>
-#include <FirmwareMSC.h>
+#include <list>
+#include <queue>
 
 class Ackbar
 {
   public:
+    Ackbar();
+
+    void addTrigger(AckbarTrigger * t);
+    void addMechanism(AckbarMechanism * m);
+    void addEventConsumer(AckbarEventConsumer & c);
+
     void doWork(void);
 
-  protected:
-    TMC2209             *stepperDriver = NULL;
-    BasicStepperDriver  *stepperMotor = NULL;
-    I2CGPS              *gnssDevice = NULL;
-    VL53L0X             *tofDevice = NULL;
-    Adafruit_SSD1608    *epdDevice = NULL;
-    FirmwareMSC         *MSC_Firmware = NULL;
-    USBMSC              *MSC_Config = NULL;
+  private:
+    AckbarTrigger *                  trigger        = nullptr;
+    AckbarMechanism *                mechanism      = nullptr;
+
+    std::list<AckbarEventConsumer>   eventConsumers = std::list<AckbarEventConsumer>();
+    std::queue<AckbarEvent>          eventQueue     = std::queue<AckbarEvent>();
 };
 
 

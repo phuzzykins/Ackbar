@@ -11,8 +11,6 @@
 class Ackbar::Calibration
 {
   public:
-
-  protected:
 	  char      board_id[BOARD_ID_LENGTH];
 	  uint16_t  tof_trigger_distance_mm;
 	  uint16_t  tof_nominal_distance_mm;

@@ -45,7 +45,7 @@
 
 #define HALL      41
 
-#define STEPPER_MICROSTEPS      16
+#define STEPPER_MICROSTEPS      8
 #define STEPPER_STEPS_PER_REV   750
 #define RUN_CURRENT_PERCENT     100
 #define HOLD_CURRENT_PERCENT    25
@@ -174,7 +174,7 @@ void change_state(ackbar_state_t newState)
 
 void stepperDiagInterrupt()
 {
-  //Serial.println("STALLGUARD!");
+  Serial.println("STALLGUARD!");
 }
 
 void init_motor()
@@ -198,9 +198,11 @@ void init_motor()
 
   stepperDriver.setRunCurrent(RUN_CURRENT_PERCENT);
   stepperDriver.setHoldCurrent(HOLD_CURRENT_PERCENT);
-  stepperDriver.enableAutomaticCurrentScaling();
+  //stepperDriver.enableAutomaticCurrentScaling();
+  //stepperDriver.enableAnalogCurrentScaling();
   stepperDriver.setStandstillMode(stepperDriver.STRONG_BRAKING);
   stepperDriver.setStallGuardThreshold(STALL_GUARD_THRESHOLD);
+  stepperDriver.disableStealthChop();
   stepperDriver.disableCoolStep();
   stepperDriver.enable();
 

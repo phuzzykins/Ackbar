@@ -2,21 +2,20 @@
 #define __ACKBAR_CONFIGURATION_H__
 
 #include <Arduino.h>
-#include <ArduinoJson.h>
-#include <FS.h>
-#include <FFat.h>
+#include <Stream.h>
 
 #define BOARD_NAME_LENGTH       32
 #define WIFI_SSID_LENGTH        32
 #define WIFI_PASSWORD_LENGTH    32
 
-class Ackbar::Configuration
+class AckbarConfiguration
 {
   public:
-    void      fromStream(Stream stream);
-    void      toStream(Stream stream);
+    AckbarConfiguration();
 
-  protected:
+    void      fromStream(Stream& stream);
+    void      toStream(Stream& stream);
+
 	  char      board_name[BOARD_NAME_LENGTH];
 	  uint16_t  motor_rpm;
 	  uint16_t  motor_acceleration;

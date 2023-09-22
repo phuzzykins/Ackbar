@@ -1,15 +1,22 @@
-
 #include "Ackbar.h"
+#include "AckbarDisplay.h"
+#include "AckbarNotifier.h"
+#include "AckbarVl53l0xTrigger.h"
+#include "AckbarBarrelMechanism.h"
 
-
-/*
-Adafruit_SSD1608 epdDevice(200, 200, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
-*/
-
-Ackbar trap;
+Ackbar                  trap;
+AckbarDisplay           display;
+AckbarNotifier          notifier;
+AckbarVl53l0xTrigger    trigger;
+AckbarBarrelMechanism   mechanism;
 
 void setup() {
   Serial.begin(115200);
+
+  trap.addMechanism(&mechanism);
+  trap.addTrigger(&trigger);
+  trap.addEventConsumer(display);
+  trap.addEventConsumer(notifier);
 }
 
 void loop() {
