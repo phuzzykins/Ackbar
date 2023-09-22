@@ -1,5 +1,6 @@
 #include <SparkFun_I2C_GPS_Arduino_Library.h>
 #include <Adafruit_EPD.h>
+#include <Fonts/FreeSans18pt7b.h>
 
 #include <TMC2209.h>
 #include <BasicStepperDriver.h>
@@ -15,7 +16,6 @@
 #include <USBMSC.h>
 #include <FirmwareMSC.h>
 #include <ArduinoJson.h>
-
 #include <esp_partition.h>
 
 #define FFAT_SECTOR_SIZE 4096
@@ -45,11 +45,11 @@
 
 #define HALL      41
 
-#define STEPPER_MICROSTEPS      64
+#define STEPPER_MICROSTEPS      16
 #define STEPPER_STEPS_PER_REV   750
 #define RUN_CURRENT_PERCENT     100
-#define HOLD_CURRENT_PERCENT    100
-#define STALL_GUARD_THRESHOLD   1
+#define HOLD_CURRENT_PERCENT    25
+#define STALL_GUARD_THRESHOLD   0
 
 #define SDA_PIN                 8
 #define SCL_PIN                 9
@@ -69,7 +69,7 @@ TMC2209             stepperDriver;
 BasicStepperDriver  stepperMotor(STEPPER_STEPS_PER_REV, STP_DIR, STP_STEP, STP_EN);
 I2CGPS              gnssDevice;
 VL53L0X             tofDevice;
-Adafruit_SSD1608    epdDevice(200, 200, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
+Adafruit_SSD1681    epdDevice(200, 200, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
 FirmwareMSC         MSC_Firmware;
 USBMSC              MSC_Config;
 
@@ -198,7 +198,7 @@ void init_motor()
 
   stepperDriver.setRunCurrent(RUN_CURRENT_PERCENT);
   stepperDriver.setHoldCurrent(HOLD_CURRENT_PERCENT);
-
+  stepperDriver.enableAutomaticCurrentScaling();
   stepperDriver.setStandstillMode(stepperDriver.STRONG_BRAKING);
   stepperDriver.setStallGuardThreshold(STALL_GUARD_THRESHOLD);
   stepperDriver.disableCoolStep();
@@ -307,9 +307,7 @@ bool start_wifi()
     uint8_t status        = WiFi.waitForConnectResult(timeout_remaining);
     int elapsed           = millis() - start;
 
-    Serial.print("Spent ");
-    Serial.print(elapsed);
-    Serial.println(" ms for WiFi connection result");
+    Serial.printf("Waited %d ms for WiFi connection result\n", elapsed);
 
     if(status == WL_CONNECTED)
     {
@@ -323,7 +321,7 @@ bool start_wifi()
     }
     else
     {
-      Serial.printf("WiFi connection failed, wl_status_t code: %d", status);
+      Serial.printf("WiFi connection failed, wl_status_t code: %d\n", status);
 
       delay(50);
 
@@ -544,9 +542,9 @@ using PsramJsonDocument = BasicJsonDocument<PsramAllocator>;
 
 void init_config_data()
 {
-  configData.motor_rpm                = 240;
-  configData.motor_acceleration       = 8;
-  configData.motor_deceleration       = 8;
+  configData.motor_rpm                = 60;
+  configData.motor_acceleration       = 2;
+  configData.motor_deceleration       = 2;
   configData.tof_timing_budget_us     = 50000;
   configData.wifi_timeout_ms          = 60000;
   configData.require_wifi             = false;
@@ -724,6 +722,8 @@ static bool onStartStop(uint8_t power_condition, bool start, bool load_eject){
 void init_msc()
 {
   Serial.println("Configuring USB Mass Storage services...");
+  
+  FFat.end();
 
   ffat_partition = (esp_partition_t *)esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_DATA_FAT, NULL);
 
@@ -748,13 +748,42 @@ void init_msc()
 
 void init_filesystem()
 {
-  //FFat.format(true);
-
   FFat.begin();
+
+  if(FFat.freeBytes() == 0)
+  {
+    Serial.println("Formatting FFAT");
+    FFat.end();
+    FFat.format(true);
+    FFat.begin();
+    Serial.println("Formatted FFAT");
+  }
 
   Serial.printf("FFAT Free space: %10u\n", FFat.freeBytes());
 
   listDir(FFat, "/", 0);
+}
+
+void init_epd()
+{
+  epdDevice.begin();
+  epdDevice.powerUp();
+  epdDevice.clearBuffer();
+
+  epdDevice.setFont(&FreeSans18pt7b);
+  epdDevice.setCursor(0, 18);
+  epdDevice.setTextColor(EPD_BLACK);
+  epdDevice.setTextWrap(true);
+  epdDevice.setCursor(8, 30);
+  epdDevice.print("Ackbar v0.2:");
+  epdDevice.setCursor(8, 60);
+  epdDevice.print("It's a trap!");
+  epdDevice.setCursor(8, 90);
+  epdDevice.print(configData.board_name);
+
+  epdDevice.display();
+
+  epdDevice.powerDown();
 }
 
 void state_starting()
@@ -763,6 +792,7 @@ void state_starting()
   init_board_id();
   init_filesystem();
   init_config_data();
+  init_epd();
   init_msc();
   init_motor();
   init_tof_sensor();
@@ -845,7 +875,8 @@ void state_arming()
       Serial.print("Sensor distance out of range: ");
       Serial.print(distance_mm);
       Serial.println(" mm");
-      change_state(ACKBAR_STATE_ERROR);
+      delay(100);
+      //change_state(ACKBAR_STATE_ERROR);
     }
     else if(distance_mm > (calibrationData.tof_nominal_distance_mm - calibrationData.tof_variance_mm * 1.5))
     {
@@ -859,7 +890,7 @@ void state_arming()
       Serial.print("Waiting for distance sensor to stabilize: ");
       Serial.print(distance_mm);
       Serial.println(" mm");
-      delay(10);
+      delay(100);
     }
   }
 }
