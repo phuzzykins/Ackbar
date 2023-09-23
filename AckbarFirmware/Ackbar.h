@@ -9,24 +9,29 @@
 
 #include <list>
 #include <queue>
+#include <mutex>
+#include <thread>
 
 class Ackbar
 {
   public:
     Ackbar();
 
-    void addTrigger(AckbarTrigger * t);
-    void addMechanism(AckbarMechanism * m);
+    void addTrigger(AckbarTrigger & t);
+    void addMechanism(AckbarMechanism & m);
     void addEventConsumer(AckbarEventConsumer & c);
+    void publishEvent(AckbarEvent & e);
 
     void doWork(void);
 
   private:
-    AckbarTrigger *                  trigger        = nullptr;
-    AckbarMechanism *                mechanism      = nullptr;
-
-    std::list<AckbarEventConsumer>   eventConsumers = std::list<AckbarEventConsumer>();
-    std::queue<AckbarEvent>          eventQueue     = std::queue<AckbarEvent>();
+    std::list<AckbarTrigger>         triggers;
+    std::list<AckbarMechanism>       mechanisms;
+    std::list<AckbarEventConsumer>   eventConsumers;
+    
+    std::queue<AckbarEvent>          eventQueue;
+    std::mutex                       eventQueueLock;
+    std::thread *                    pEventThread       = nullptr;                     
 };
 
 

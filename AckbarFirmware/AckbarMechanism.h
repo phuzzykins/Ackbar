@@ -1,9 +1,16 @@
 #ifndef __ACKBAR_MECHANISM_H__
 #define __ACKBAR_MECHANISM_H__
 
-class AckbarMechanism
+#include "AckbarComponent.h"
+
+class AckbarMechanism : public AckbarComponent
 {
-  
+  public:
+    void begin()      {};
+    void calibrate()  {};
+
+    void activate()   {};
+    void reset()      {};
 };
 
 

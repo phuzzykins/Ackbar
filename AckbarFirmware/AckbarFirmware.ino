@@ -10,15 +10,17 @@ AckbarNotifier          notifier;
 AckbarVl53l0xTrigger    trigger;
 AckbarBarrelMechanism   mechanism;
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
 
-  trap.addMechanism(&mechanism);
-  trap.addTrigger(&trigger);
+  trap.addMechanism(mechanism);
+  trap.addTrigger(trigger);
   trap.addEventConsumer(display);
   trap.addEventConsumer(notifier);
 }
 
-void loop() {
+void loop()
+{
   trap.doWork();
 }

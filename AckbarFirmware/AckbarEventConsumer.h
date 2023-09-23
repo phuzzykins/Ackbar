@@ -1,9 +1,15 @@
 #ifndef __ACKBAR_EVENT_CONSUMER_H__
 #define __ACKBAR_EVENT_CONSUMER_H__
 
-class AckbarEventConsumer
+#include "AckbarComponent.h"
+#include "AckbarEvent.h"
+
+class AckbarEventConsumer : public AckbarComponent
 {
-  
+  public:
+    void begin()                        {};
+    void calibrate()                    {};
+    void handleEvent(AckbarEvent & e)   {};
 };
 
 

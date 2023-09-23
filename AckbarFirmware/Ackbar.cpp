@@ -5,19 +5,26 @@ Ackbar::Ackbar()
 
 }
 
-void Ackbar::addTrigger(AckbarTrigger * t)
+void Ackbar::addTrigger(AckbarTrigger & t)
 {
-  trigger = t;
+  triggers.push_back(t);
 }
 
-void Ackbar::addMechanism(AckbarMechanism * m)
+void Ackbar::addMechanism(AckbarMechanism & m)
 {
-  mechanism = m;
+  mechanisms.push_back(m);
 }
 
 void Ackbar::addEventConsumer(AckbarEventConsumer & c)
 {
   eventConsumers.push_back(c);
+}
+
+void Ackbar::publishEvent(AckbarEvent & e)
+{
+  std::lock_guard<std::mutex> guard(eventQueueLock);
+  
+  eventQueue.push(e);
 }
 
 void Ackbar::doWork(void)
