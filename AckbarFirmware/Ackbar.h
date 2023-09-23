@@ -8,6 +8,7 @@
 #include "AckbarEventConsumer.h"
 #include "AckbarTrigger.h"
 #include "AckbarMechanism.h"
+#include "AckbarState.h"
 
 #include <list>
 #include <queue>
@@ -28,17 +29,6 @@ class Ackbar
     void publishEvent(AckbarEvent & e);
 
     void doWork(void);
-
-    enum AckbarState
-    {
-      RESET,
-      ERROR,
-      STARTUP,
-      CALIBRATING,
-      ARMING,
-      ARMED,
-      ACTIVE
-    };
 
   private:
     AckbarConfiguration              configuration;

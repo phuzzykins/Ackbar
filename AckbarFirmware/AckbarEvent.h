@@ -3,22 +3,32 @@
 
 class AckbarEvent
 {
-  
-};
-
-class AckbarStartupEvent : public AckbarEvent
-{
-
+  public:
+    int eventType;
+    enum EventType
+    {
+      TRAP_EVENT,
+      ERROR_EVENT,
+      STATE_CHANGE_EVENT
+    };
 };
 
 class AckbarTrapEvent : public AckbarEvent
 {
-
+  public:
+    AckbarTrapEvent()
+    {
+      eventType = TRAP_EVENT;
+    };
 };
 
 class AckbarErrorEvent : public AckbarEvent
 {
-
+  public:
+    AckbarErrorEvent()
+    {
+      eventType = ERROR_EVENT;
+    };
 };
 
 class AckbarStateChangeEvent : public AckbarEvent
@@ -26,14 +36,13 @@ class AckbarStateChangeEvent : public AckbarEvent
   public:
     AckbarStateChangeEvent(int o, int n)
     {
+      eventType = STATE_CHANGE_EVENT;
       oldState = o;
       newState = n;
     };
 
     int oldState;
     int newState;
-
-
 };
 
 #endif // __ACKBAR_EVENT_H__
