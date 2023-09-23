@@ -14,6 +14,9 @@ void setup()
 {
   Serial.begin(115200);
 
+  trap.readConfiguration();
+  trap.startMSC();
+
   trap.addMechanism(mechanism);
   trap.addTrigger(trigger);
   trap.addEventConsumer(display);
