@@ -16,6 +16,7 @@ class AckbarEventService
     void publishEvent(AckbarEvent * e);
 
   private:
+    void eventThreadFunction();
     static std::mutex                       lock;
     static std::list<AckbarEventConsumer*>  eventConsumers;
     static std::queue<AckbarEvent *>        eventQueue;
