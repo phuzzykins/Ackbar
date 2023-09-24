@@ -18,7 +18,6 @@ class AckbarTrapEvent : public AckbarEvent
   public:
     AckbarTrapEvent(void)
     {
-      Serial.println("Constructor for AckbarTrapEvent");
       eventType = TRAP_EVENT;
     };
 };

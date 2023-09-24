@@ -4,7 +4,6 @@
 #include <Arduino.h>
 
 #include "AckbarConfiguration.h"
-#include "AckbarEvent.h"
 #include "AckbarEventConsumer.h"
 #include "AckbarTrigger.h"
 #include "AckbarMechanism.h"
@@ -29,7 +28,6 @@ class Ackbar
     void addTrigger(AckbarTrigger * t);
     void addMechanism(AckbarMechanism * m);
     void addEventConsumer(AckbarEventConsumer * c);
-    void publishEvent(AckbarEvent * e);
 
     void doWork(void);
 
@@ -42,14 +40,9 @@ class Ackbar
     std::list<AckbarComponent*>      components;
     std::list<AckbarTrigger*>        triggers;
     std::list<AckbarMechanism*>      mechanisms;
-    std::list<AckbarEventConsumer*>  eventConsumers;
-
-    std::queue<AckbarEvent *>        eventQueue;
-    std::mutex                       eventQueueLock;
-    std::thread *                    pEventThread       = nullptr;
     
     AckbarState                      currentState       = STATE_RESET;
-    
+
     char stateToString[STATE_LAST][32];
 
     void changeState(AckbarState s);

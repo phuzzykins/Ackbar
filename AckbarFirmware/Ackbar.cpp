@@ -1,9 +1,9 @@
 #include "Ackbar.h"
+#include "AckbarEventService.h"
 
 #include <FS.h>
 #include <FFat.h>
 #include <USB.h>
-
 
 #define FFAT_SECTOR_SIZE 4096
 
@@ -234,22 +234,8 @@ void Ackbar::addEventConsumer(AckbarEventConsumer * c)
 {
   c->setConfiguration(&configuration);
   components.push_back(c);
-  eventConsumers.push_back(c);
-}
-
-void Ackbar::publishEvent(AckbarEvent * e)
-{
-  //std::lock_guard<std::mutex> guard(eventQueueLock);
-
-  //eventQueue.push(e);
-
-  for(AckbarEventConsumer * c : eventConsumers)
-  {
-    //Serial.printf("Sending Event of type %d to: %s\n", e->eventType, c->name());
-    c->handleEvent(e);
-  }
-
-  delete(e);
+  AckbarEventService s;
+  s.addConsumer(c);
 }
 
 void Ackbar::changeState(AckbarState s)
@@ -262,8 +248,9 @@ void Ackbar::changeState(AckbarState s)
   Serial.printf("Changing state from %s to %s\n", stateToString[currentState], stateToString[s]);
 
   AckbarStateChangeEvent * e = new AckbarStateChangeEvent(currentState, s);
+  AckbarEventService es;
 
-  publishEvent(e);
+  es.publishEvent(e);
 
   currentState = s;
 }
@@ -345,7 +332,8 @@ void Ackbar::doWork(void)
         }
 
         AckbarTrapEvent * e = new AckbarTrapEvent();
-        publishEvent(e);
+        AckbarEventService s;
+        s.publishEvent(e);
 
         changeState(STATE_ARMING);
       };
