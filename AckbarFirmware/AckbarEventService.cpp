@@ -32,7 +32,6 @@ void AckbarEventService::eventThreadFunction()
     }
     else
     {
-      std::lock_guard<std::mutex> guard(AckbarEventService::lock);
       for(AckbarEventConsumer * c : AckbarEventService::eventConsumers)
       {
         //Serial.printf("Sending Event of type %d to: %s\n", e->eventType, c->name());
