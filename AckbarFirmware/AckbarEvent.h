@@ -4,11 +4,11 @@
 class AckbarEvent
 {
   public:
-    int eventType;
+    int eventType = -1;
     enum EventType
     {
       TRAP_EVENT,
-      STATE_ERROR_EVENT,
+      ERROR_EVENT,
       STATE_CHANGE_EVENT
     };
 };
@@ -18,6 +18,7 @@ class AckbarTrapEvent : public AckbarEvent
   public:
     AckbarTrapEvent(void)
     {
+      Serial.println("Constructor for AckbarTrapEvent");
       eventType = TRAP_EVENT;
     };
 };
@@ -27,7 +28,7 @@ class AckbarErrorEvent : public AckbarEvent
   public:
     AckbarErrorEvent()
     {
-      eventType = STATE_ERROR_EVENT;
+      eventType = ERROR_EVENT;
     };
 };
 

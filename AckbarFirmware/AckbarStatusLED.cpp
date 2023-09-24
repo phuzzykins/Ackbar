@@ -45,7 +45,7 @@ void AckbarStatusLED::handleEvent(AckbarEvent * e)
     return;
   }
 
-  if(e->eventType = e->STATE_CHANGE_EVENT)
+  if(e->eventType == e->STATE_CHANGE_EVENT)
   {
     AckbarStateChangeEvent * sce = (AckbarStateChangeEvent *) e;
 

@@ -245,6 +245,7 @@ void Ackbar::publishEvent(AckbarEvent * e)
 
   for(AckbarEventConsumer * c : eventConsumers)
   {
+    //Serial.printf("Sending Event of type %d to: %s\n", e->eventType, c->name());
     c->handleEvent(e);
   }
 
@@ -294,41 +295,60 @@ void Ackbar::doWork(void)
       break;
 
     case STATE_ARMING:
-      for(AckbarTrigger * t : triggers)
       {
-        Serial.printf("Checking Trigger: %s\n", t->name());
-        if(t->isReady())
+        bool ready = true;
+        for(AckbarTrigger * t : triggers)
+        {
+
+          if(t->isReady())
+          {
+            Serial.printf("Trigger: %s is READY to arm\n", t->name());
+          }
+          else
+          {
+            Serial.printf("Trigger: %s is NOT ready to arm\n", t->name());
+            ready = false;
+          }
+        }
+
+        if(ready)
         {
           changeState(STATE_ARMED);
         }
-      }
-
+      };
+      break;
     case STATE_ARMED:
       for(AckbarTrigger * t : triggers)
       {
-        //Serial.printf("Checking Trigger: %s\n", t->name());
         if(t->isTriggered())
         {
+          Serial.printf("Activated by Trigger: %s\n", t->name());
           changeState(STATE_ACTIVE);
         }
       }
       break;
 
     case STATE_ACTIVE:
-      for(AckbarMechanism * m : mechanisms)
       {
-        Serial.printf("Activating Mechanism: %s\n", m->name());
-        m->activate();
-      }
-      delay(configuration.trap_dwell_time_ms);
-      for(AckbarMechanism * m : mechanisms)
-      {
-        Serial.printf("Resetting Mechanism: %s\n", m->name());
-        m->reset();
-      }
-      //AckbarTrapEvent * e = new AckbarTrapEvent();
-      //publishEvent(e);
-      changeState(STATE_ARMING);
+        for(AckbarMechanism * m : mechanisms)
+        {
+          Serial.printf("Activating Mechanism: %s\n", m->name());
+          m->activate();
+        }
+
+        delay(configuration.trap_dwell_time_ms);
+
+        for(AckbarMechanism * m : mechanisms)
+        {
+          Serial.printf("Resetting Mechanism: %s\n", m->name());
+          m->reset();
+        }
+
+        AckbarTrapEvent * e = new AckbarTrapEvent();
+        publishEvent(e);
+
+        changeState(STATE_ARMING);
+      };
       break;
 
     case STATE_ERROR:
