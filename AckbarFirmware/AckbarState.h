@@ -9,7 +9,8 @@ enum AckbarState
   STATE_CALIBRATING,
   STATE_ARMING,
   STATE_ARMED,
-  STATE_ACTIVE
+  STATE_ACTIVE,
+  STATE_LAST
 };
   
 #endif // __ACKBAR_STATE_H__

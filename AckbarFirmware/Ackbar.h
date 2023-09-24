@@ -15,6 +15,9 @@
 #include <mutex>
 #include <thread>
 
+#include <USBMSC.h>
+#include <FirmwareMSC.h>
+
 class Ackbar
 {
   public:
@@ -33,6 +36,10 @@ class Ackbar
   private:
     AckbarConfiguration              configuration;
 
+    FirmwareMSC                      MSC_Firmware;
+    USBMSC                           MSC_Config;
+
+    std::list<AckbarComponent*>      components;
     std::list<AckbarTrigger*>        triggers;
     std::list<AckbarMechanism*>      mechanisms;
     std::list<AckbarEventConsumer*>  eventConsumers;
@@ -42,6 +49,8 @@ class Ackbar
     std::thread *                    pEventThread       = nullptr;
     
     AckbarState                      currentState       = STATE_RESET;
+    
+    char stateToString[STATE_LAST][32];
 
     void changeState(AckbarState s);
 };

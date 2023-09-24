@@ -4,9 +4,9 @@
 
 AckbarConfiguration::AckbarConfiguration()
 {
-  motor_rpm                = 60;
-  motor_acceleration       = 2;
-  motor_deceleration       = 2;
+  motor_rpm                = 480;
+  motor_acceleration       = 8;
+  motor_deceleration       = 8;
   tof_timing_budget_us     = 50000;
   trap_dwell_time_ms       = 5000;
   wifi_timeout_ms          = 60000;

@@ -3,8 +3,15 @@
 
 #define ANT_DETECTION_THRESHHOLD 10
 
+char * AckbarVl53l0xTrigger::name()
+{
+  return("Laser Time-of-Flight Trigger");
+}
+
 void AckbarVl53l0xTrigger::begin()
 {
+  Wire.begin();
+
   pinMode(TOF_XSHUT, OUTPUT);
 
   digitalWrite(TOF_XSHUT, LOW);
@@ -66,7 +73,7 @@ void AckbarVl53l0xTrigger::calibrate()
     variance_mm = max_variance;
   }
 
-  trigger_distance_mm = max_variance * 2;
+  trigger_distance_mm = max_variance * 3;
 
   Serial.print("Minimum Sensor Distance: ");
   Serial.print(min_distance);
@@ -91,6 +98,8 @@ void AckbarVl53l0xTrigger::calibrate()
 
 bool AckbarVl53l0xTrigger::isReady()
 {
+  consecutiveReadings = 0;
+
   uint16_t distance_mm = device.readRangeSingleMillimeters();
 
   if(device.timeoutOccurred())
@@ -131,21 +140,22 @@ bool AckbarVl53l0xTrigger::isTriggered()
   if(device.timeoutOccurred())
   {
     Serial.println("Timeout");
-    return false;
   }
   else
   {
     if(distance_mm < ANT_DETECTION_THRESHHOLD)
     {
-      return false;
+      consecutiveReadings = 0;
     }
     else if(distance_mm < (nominal_distance_mm - trigger_distance_mm))
     {
-      return true;
+      consecutiveReadings++;
     }
     else
     {
-      return false;
+      consecutiveReadings = 0;
     }
   }
+
+  return(consecutiveReadings > 2);
 }

@@ -10,6 +10,7 @@ class AckbarBarrelMechanism : public AckbarMechanism
 {
   public:
     ~AckbarBarrelMechanism();
+    char * name();
     void begin();
     void calibrate();
     void activate();

@@ -4,6 +4,11 @@
 #include <Fonts/FreeSans18pt7b.h>
 
 
+char * AckbarDisplay::name()
+{
+  return("ePaper Display");
+}
+
 AckbarDisplay::~AckbarDisplay()
 {
   if(epdDevice != nullptr)
@@ -14,14 +19,11 @@ AckbarDisplay::~AckbarDisplay()
 
 void AckbarDisplay::begin()
 {
-  Serial.println("AckbarDisplay::begin()");
   epdDevice = new Adafruit_SSD1681(200, 200, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
 }
 
 void AckbarDisplay::calibrate()
 {
-  Serial.println("AckbarDisplay::calibrate()");
-
   epdDevice->begin();
   epdDevice->powerUp();
   epdDevice->clearBuffer();

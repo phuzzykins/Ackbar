@@ -7,6 +7,7 @@
 class AckbarVl53l0xTrigger : public AckbarTrigger
 {
   public:
+    char * name();
     void begin();
     void calibrate();
     bool isReady();
@@ -17,6 +18,7 @@ class AckbarVl53l0xTrigger : public AckbarTrigger
     uint16_t  trigger_distance_mm;
     uint16_t  nominal_distance_mm;
     uint16_t  variance_mm;
+    int consecutiveReadings = 0;
 };
 
 

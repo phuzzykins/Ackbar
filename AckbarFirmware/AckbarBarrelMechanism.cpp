@@ -7,6 +7,11 @@
 #define HOLD_CURRENT_PERCENT    25
 #define STALL_GUARD_THRESHOLD   0
 
+char * AckbarBarrelMechanism::name()
+{
+  return("Barrel Mechanism");
+}
+
 AckbarBarrelMechanism::~AckbarBarrelMechanism()
 {
   if(stepperMotor != nullptr)

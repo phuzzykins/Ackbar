@@ -1,5 +1,11 @@
 #include "AckbarNotifier.h"
 
+char * AckbarNotifier::name()
+{
+  return("NTFY Notifier");
+}
+
+
 void AckbarNotifier::begin()
 {
 

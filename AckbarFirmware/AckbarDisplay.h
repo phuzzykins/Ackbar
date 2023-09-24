@@ -8,6 +8,7 @@ class AckbarDisplay : public AckbarEventConsumer
 {
   public:
     ~AckbarDisplay();
+    char * name();
     void begin();
     void calibrate();
     void handleEvent(AckbarEvent * e);

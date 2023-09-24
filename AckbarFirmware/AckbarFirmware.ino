@@ -21,11 +21,11 @@ void setup()
   trap.readConfiguration();
   trap.startMSC();
 
-  trap.addMechanism(&mechanism);
-  trap.addTrigger(&trigger);
   trap.addEventConsumer(&led);
   trap.addEventConsumer(&display);
   trap.addEventConsumer(&notifier);
+  trap.addMechanism(&mechanism);
+  trap.addTrigger(&trigger);
 
   Serial.println("Ackbar firmware topology is configured");
 }

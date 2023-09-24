@@ -28,4 +28,6 @@
 
 #define HALL      41
 
+#define RGB_BUILTIN 21
+
 #endif // __ACKBAR_PINS_H__

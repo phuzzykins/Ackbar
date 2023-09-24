@@ -6,6 +6,7 @@
 class AckbarNotifier : public AckbarEventConsumer
 {
   public:
+    char * name();
     void begin();
     void calibrate();
     void handleEvent(AckbarEvent * e);
