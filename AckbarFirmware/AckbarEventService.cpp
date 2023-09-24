@@ -61,7 +61,7 @@ void AckbarEventService::publishEvent(AckbarEvent * e)
     xTaskCreatePinnedToCore(
       &eventTaskFunction,
       "Event Dispatch Thread",
-      4096,
+      8192,
       nullptr,
       1,
       &AckbarEventService::pTaskHandle,

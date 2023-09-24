@@ -53,6 +53,7 @@ bool AckbarWifiConnection::connect()
 
 void AckbarWifiConnection::disconnect()
 {
+  Serial.println("Disconnecting from WiFi");
   WiFi.disconnect(true);
 }
 
