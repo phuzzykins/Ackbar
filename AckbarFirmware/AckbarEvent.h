@@ -1,15 +1,20 @@
 #ifndef __ACKBAR_EVENT_H__
 #define __ACKBAR_EVENT_H__
 
+#include <IPAddress.h>
+
 class AckbarEvent
 {
   public:
     int eventType = -1;
     enum EventType
     {
+      STATE_CHANGE_EVENT,
+      STARTUP_EVENT,
       TRAP_EVENT,
       ERROR_EVENT,
-      STATE_CHANGE_EVENT
+      WIFI_CONNECTION_EVENT,
+      WIFI_DISCONNECTION_EVENT
     };
 };
 
@@ -34,15 +39,52 @@ class AckbarErrorEvent : public AckbarEvent
 class AckbarStateChangeEvent : public AckbarEvent
 {
   public:
-    AckbarStateChangeEvent(int o, int n)
+    AckbarStateChangeEvent(int oldState, int newState)
     {
-      eventType = STATE_CHANGE_EVENT;
-      oldState = o;
-      newState = n;
+      eventType       = STATE_CHANGE_EVENT;
+      this->oldState  = oldState;
+      this->newState  = newState;
     };
 
     int oldState;
     int newState;
+};
+
+class AckbarStartupEvent : public AckbarEvent
+{
+  public:
+    AckbarStartupEvent()
+    {
+      eventType = STARTUP_EVENT;
+    };
+};
+
+class AckbarWifiConnectionEvent : public AckbarEvent
+{
+  public:
+    AckbarWifiConnectionEvent(IPAddress ipAddress, int rssi)
+    {
+      eventType       = WIFI_CONNECTION_EVENT;
+      this->ipAddress = ipAddress;
+      this->rssi      = rssi;
+    };
+
+    ~AckbarWifiConnectionEvent()
+    {
+      //delete ipAddress;
+    }
+
+    IPAddress ipAddress;
+    int rssi;
+};
+
+class AckbarWifiDisconnectionEvent : public AckbarEvent
+{
+  public:
+    AckbarWifiDisconnectionEvent()
+    {
+      eventType = WIFI_DISCONNECTION_EVENT;
+    };
 };
 
 #endif // __ACKBAR_EVENT_H__

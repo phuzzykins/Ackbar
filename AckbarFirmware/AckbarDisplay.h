@@ -13,7 +13,8 @@ class AckbarDisplay : public AckbarEventConsumer
     void calibrate();
     void handleEvent(AckbarEvent * e);
 
-  public:
+  private:
+    void splashScreen();
     Adafruit_SSD1681 *epdDevice = nullptr;
 };
 

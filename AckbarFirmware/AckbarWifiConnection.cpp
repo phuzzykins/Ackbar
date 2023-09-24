@@ -1,4 +1,5 @@
 #include "AckbarWifiConnection.h"
+#include "AckbarEventService.h"
 #include <WiFi.h>
 
 // Initial implementation is not thread safe
@@ -39,6 +40,12 @@ bool AckbarWifiConnection::connect()
       Serial.printf("IP address:        %s\n",      WiFi.localIP().toString().c_str());
       Serial.printf("Signal Strength:   %i dBm\n",  WiFi.RSSI());
 
+      {
+        AckbarEventService s;
+        AckbarWifiConnectionEvent * e = new AckbarWifiConnectionEvent(WiFi.localIP(), WiFi.RSSI());
+        s.publishEvent(e);
+      };
+
       return true;
     }
     else
@@ -55,6 +62,11 @@ void AckbarWifiConnection::disconnect()
 {
   Serial.println("Disconnecting from WiFi");
   WiFi.disconnect(true);
+  {
+    AckbarEventService s;
+    AckbarWifiDisconnectionEvent * e = new AckbarWifiDisconnectionEvent();
+    s.publishEvent(e);
+  };
 }
 
 AckbarWifiConnection::~AckbarWifiConnection()

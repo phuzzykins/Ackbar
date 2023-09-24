@@ -279,6 +279,12 @@ void Ackbar::doWork(void)
         c->calibrate();
       }
       changeState(STATE_ARMING);
+      {
+        AckbarEventService s;
+        AckbarStartupEvent * e = new AckbarStartupEvent();
+        s.publishEvent(e);
+      };
+
       break;
 
     case STATE_ARMING:
@@ -326,7 +332,7 @@ void Ackbar::doWork(void)
         AckbarTrapEvent * e = new AckbarTrapEvent();
         AckbarEventService s;
         s.publishEvent(e);
-        
+
         delay(configuration.trap_dwell_time_ms);
 
         for(AckbarMechanism * m : mechanisms)

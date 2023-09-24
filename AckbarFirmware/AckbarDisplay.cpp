@@ -20,11 +20,16 @@ AckbarDisplay::~AckbarDisplay()
 void AckbarDisplay::begin()
 {
   epdDevice = new Adafruit_SSD1681(200, 200, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
+  epdDevice->begin();
 }
 
 void AckbarDisplay::calibrate()
 {
-  epdDevice->begin();
+
+}
+
+void AckbarDisplay::splashScreen()
+{
   epdDevice->powerUp();
   epdDevice->clearBuffer();
 
@@ -46,5 +51,8 @@ void AckbarDisplay::calibrate()
 
 void AckbarDisplay::handleEvent(AckbarEvent * e)
 {
-
+  if(e->eventType == e->STARTUP_EVENT)
+  {
+    splashScreen();
+  }
 }
