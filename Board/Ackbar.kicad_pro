@@ -129,7 +129,7 @@
         {
           "td_allow_use_two_tracks": true,
           "td_curve_segcount": 5,
-          "td_on_pad_in_zone": false,
+          "td_on_pad_in_zone": true,
           "td_onpadsmd": true,
           "td_onroundshapesonly": false,
           "td_ontrackend": false,
@@ -426,9 +426,9 @@
         "name": "Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.5,
-        "via_diameter": 0.8,
-        "via_drill": 0.4,
+        "track_width": 0.75,
+        "via_diameter": 2.4,
+        "via_drill": 1.2,
         "wire_width": 12
       }
     ],
@@ -465,6 +465,14 @@
       {
         "netclass": "Power",
         "pattern": "/M_B2"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "/VSYS"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "/VOUT"
       }
     ]
   },
