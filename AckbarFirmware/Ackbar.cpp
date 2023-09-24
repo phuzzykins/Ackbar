@@ -323,6 +323,10 @@ void Ackbar::doWork(void)
           m->activate();
         }
 
+        AckbarTrapEvent * e = new AckbarTrapEvent();
+        AckbarEventService s;
+        s.publishEvent(e);
+        
         delay(configuration.trap_dwell_time_ms);
 
         for(AckbarMechanism * m : mechanisms)
@@ -330,10 +334,6 @@ void Ackbar::doWork(void)
           Serial.printf("Resetting Mechanism: %s\n", m->name());
           m->reset();
         }
-
-        AckbarTrapEvent * e = new AckbarTrapEvent();
-        AckbarEventService s;
-        s.publishEvent(e);
 
         changeState(STATE_ARMING);
       };
