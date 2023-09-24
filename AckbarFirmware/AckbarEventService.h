@@ -14,13 +14,13 @@ class AckbarEventService
   public:
     void addConsumer(AckbarEventConsumer * c);
     void publishEvent(AckbarEvent * e);
+    void eventThreadFunction();
 
   private:
-    void eventThreadFunction();
     static std::mutex                       lock;
     static std::list<AckbarEventConsumer*>  eventConsumers;
     static std::queue<AckbarEvent *>        eventQueue;
-    static std::thread *                    pEventThread;
+    static TaskHandle_t                     pTaskHandle;
 };
 
 #endif // __ACKBAR_EVENT_SERVICE_H__

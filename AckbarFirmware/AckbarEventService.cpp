@@ -1,10 +1,16 @@
 #include "AckbarEventService.h"
 
-
 std::mutex                       AckbarEventService::lock;
 std::list<AckbarEventConsumer*>  AckbarEventService::eventConsumers   = std::list<AckbarEventConsumer*>();
 std::queue<AckbarEvent *>        AckbarEventService::eventQueue       = std::queue<AckbarEvent *>();
-std::thread *                    AckbarEventService::pEventThread     = nullptr;
+TaskHandle_t                     AckbarEventService::pTaskHandle      = nullptr;
+
+static void eventTaskFunction(void * pvParameters)
+{
+  AckbarEventService s;
+
+  s.eventThreadFunction();
+}
 
 void AckbarEventService::eventThreadFunction()
 {
@@ -50,9 +56,16 @@ void AckbarEventService::publishEvent(AckbarEvent * e)
 
   eventQueue.push(e);
 
-  if(AckbarEventService::pEventThread == nullptr)
+  if(AckbarEventService::pTaskHandle == nullptr)
   {
-    //AckbarEventService::pEventThread = new std::thread(&threadStart);
-    AckbarEventService::pEventThread = new std::thread(&AckbarEventService::eventThreadFunction, this);
+    xTaskCreatePinnedToCore(
+      &eventTaskFunction,
+      "Event Dispatch Thread",
+      2048,
+      nullptr,
+      1,
+      &AckbarEventService::pTaskHandle,
+      (ARDUINO_RUNNING_CORE == 0) ? 1 : 0
+    );
   }
 }
