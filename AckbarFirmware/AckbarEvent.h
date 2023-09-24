@@ -8,7 +8,7 @@ class AckbarEvent
     enum EventType
     {
       TRAP_EVENT,
-      ERROR_EVENT,
+      STATE_ERROR_EVENT,
       STATE_CHANGE_EVENT
     };
 };
@@ -16,7 +16,7 @@ class AckbarEvent
 class AckbarTrapEvent : public AckbarEvent
 {
   public:
-    AckbarTrapEvent()
+    AckbarTrapEvent(void)
     {
       eventType = TRAP_EVENT;
     };
@@ -27,7 +27,7 @@ class AckbarErrorEvent : public AckbarEvent
   public:
     AckbarErrorEvent()
     {
-      eventType = ERROR_EVENT;
+      eventType = STATE_ERROR_EVENT;
     };
 };
 

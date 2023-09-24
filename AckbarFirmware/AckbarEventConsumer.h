@@ -7,9 +7,7 @@
 class AckbarEventConsumer : public AckbarComponent
 {
   public:
-    void begin()                        {};
-    void calibrate()                    {};
-    void handleEvent(AckbarEvent & e)   {};
+    virtual void handleEvent(AckbarEvent * e) = 0;
 };
 
 

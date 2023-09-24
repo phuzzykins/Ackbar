@@ -6,11 +6,8 @@
 class AckbarMechanism : public AckbarComponent
 {
   public:
-    void begin()      {};
-    void calibrate()  {};
-
-    void activate()   {};
-    void reset()      {};
+    virtual void activate() = 0;
+    virtual void reset() = 0;
 };
 
 

@@ -6,11 +6,8 @@
 class AckbarTrigger : public AckbarComponent
 {
   public:
-    void begin()        {};
-    void calibrate()    {};
-
-    bool isReady()      { return true;  }
-    bool isTriggered()  { return false; }
+    virtual bool isReady() = 0;
+    virtual bool isTriggered() = 0;
 };
 
 

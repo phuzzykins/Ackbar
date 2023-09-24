@@ -8,7 +8,7 @@ class AckbarStatusLED : public AckbarEventConsumer
   public:
     void begin();
     void calibrate();
-    void handleEvent(AckbarEvent & e);
+    void handleEvent(AckbarEvent * e);
 };
 
 

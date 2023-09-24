@@ -8,6 +8,7 @@ class AckbarNotifier : public AckbarEventConsumer
   public:
     void begin();
     void calibrate();
+    void handleEvent(AckbarEvent * e);
 };
 
 

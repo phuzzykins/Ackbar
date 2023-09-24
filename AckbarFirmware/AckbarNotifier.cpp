@@ -9,3 +9,8 @@ void AckbarNotifier::calibrate()
 {
 
 }
+
+void AckbarNotifier::handleEvent(AckbarEvent * e)
+{
+
+}

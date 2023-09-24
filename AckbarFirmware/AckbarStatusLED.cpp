@@ -15,26 +15,26 @@ void AckbarStatusLED::calibrate()
 
 }
 
-void AckbarStatusLED::handleEvent(AckbarEvent & e)
+void AckbarStatusLED::handleEvent(AckbarEvent * e)
 {
-  if(e.eventType = e.STATE_CHANGE_EVENT)
+  if(e->eventType = e->STATE_CHANGE_EVENT)
   {
-    AckbarStateChangeEvent * sce = (AckbarStateChangeEvent *) &e;
+    AckbarStateChangeEvent * sce = (AckbarStateChangeEvent *) e;
     switch(sce->newState)
     {
-      case RESET:
+      case STATE_RESET:
         break;
-      case ERROR:
+      case STATE_ERROR:
         break;
-      case STARTUP:
+      case STATE_STARTUP:
         break;
-      case CALIBRATING:
+      case STATE_CALIBRATING:
         break;
-      case ARMING:
+      case STATE_ARMING:
         break;
-      case ARMED:
+      case STATE_ARMED:
         break;
-      case ACTIVE:
+      case STATE_ACTIVE:
         break;
       default:
         break;

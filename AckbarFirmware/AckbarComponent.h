@@ -6,8 +6,9 @@
 class AckbarComponent
 {
   public:
-    virtual void begin();
-    virtual void calibrate();
+    virtual void begin() = 0;
+    virtual void calibrate() = 0;
+
     void setConfiguration(AckbarConfiguration * c)
     {
       configuration = c;
