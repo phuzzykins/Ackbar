@@ -8,6 +8,7 @@ class AckbarEventConsumer : public AckbarComponent
 {
   public:
     virtual void handleEvent(AckbarEvent * e) = 0;
+    bool deliverEventsSynchronously = false;
 };
 
 

@@ -4,7 +4,10 @@
 #include "AckbarPins.h"
 #include "AckbarState.h"
 
-
+AckbarStatusLED::AckbarStatusLED()
+{
+  deliverEventsSynchronously = true;
+}
 
 AckbarStatusLED::~AckbarStatusLED()
 {

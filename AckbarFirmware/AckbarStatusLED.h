@@ -9,6 +9,7 @@
 class AckbarStatusLED : public AckbarEventConsumer
 {
   public:
+    AckbarStatusLED();
     ~AckbarStatusLED();
     char * name();
     void begin();

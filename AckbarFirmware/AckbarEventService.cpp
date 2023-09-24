@@ -34,8 +34,10 @@ void AckbarEventService::eventThreadFunction()
     {
       for(AckbarEventConsumer * c : AckbarEventService::eventConsumers)
       {
-        //Serial.printf("Sending Event of type %d to: %s\n", e->eventType, c->name());
-        c->handleEvent(e);
+        if(! c->deliverEventsSynchronously) {
+          //Serial.printf("Sending Event of type %d to: %s\n", e->eventType, c->name());
+          c->handleEvent(e);
+        }
       }
 
       delete(e);
@@ -51,6 +53,14 @@ void AckbarEventService::addConsumer(AckbarEventConsumer * c)
 
 void AckbarEventService::publishEvent(AckbarEvent * e)
 {
+  for(AckbarEventConsumer * c : AckbarEventService::eventConsumers)
+  {
+    if(c->deliverEventsSynchronously) {
+      //Serial.printf("Sending Event of type %d to: %s\n", e->eventType, c->name());
+      c->handleEvent(e);
+    }
+  }
+
   std::lock_guard<std::mutex> guard(AckbarEventService::lock);
 
   eventQueue.push(e);
