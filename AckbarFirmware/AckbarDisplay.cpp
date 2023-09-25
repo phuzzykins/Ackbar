@@ -11,16 +11,15 @@ char * AckbarDisplay::name()
 
 AckbarDisplay::~AckbarDisplay()
 {
-  if(epdDevice != nullptr)
-  {
-    delete epdDevice;
-  }
+  delete epdDevice;
 }
 
 void AckbarDisplay::begin()
 {
-  epdDevice = new Adafruit_SSD1681(200, 200, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY, EPD_SPI);
-  epdDevice->begin();
+  epdDevice = new GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT>(GxEPD2_154_D67(EPD_CS, EPD_DC, EPD_RESET, EPD_BUSY));
+
+  epdDevice->init(115200);
+  epdDevice->setRotation(3);
 }
 
 void AckbarDisplay::calibrate()
@@ -30,12 +29,11 @@ void AckbarDisplay::calibrate()
 
 void AckbarDisplay::splashScreen()
 {
-  epdDevice->powerUp();
-  epdDevice->clearBuffer();
-
+  epdDevice->setFullWindow();
+  epdDevice->fillScreen(GxEPD_WHITE);
   epdDevice->setFont(&FreeSans18pt7b);
   epdDevice->setCursor(0, 18);
-  epdDevice->setTextColor(EPD_BLACK);
+  epdDevice->setTextColor(GxEPD_BLACK);
   epdDevice->setTextWrap(true);
   epdDevice->setCursor(8, 30);
   epdDevice->print("Ackbar v0.2:");
@@ -44,9 +42,7 @@ void AckbarDisplay::splashScreen()
   epdDevice->setCursor(8, 90);
   epdDevice->print(configuration->board_name);
 
-  epdDevice->display();
-
-  epdDevice->powerDown();
+  epdDevice->display(false);
 }
 
 void AckbarDisplay::handleEvent(AckbarEvent * e)

@@ -2,7 +2,7 @@
 #define __ACKBAR_DISPLAY_H__
 
 #include "AckbarEventConsumer.h"
-#include <Adafruit_EPD.h>
+#include <GxEPD2_BW.h>
 
 class AckbarDisplay : public AckbarEventConsumer
 {
@@ -15,7 +15,8 @@ class AckbarDisplay : public AckbarEventConsumer
 
   private:
     void splashScreen();
-    Adafruit_SSD1681 *epdDevice = nullptr;
+    
+    GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT> *epdDevice = nullptr;
 };
 
 

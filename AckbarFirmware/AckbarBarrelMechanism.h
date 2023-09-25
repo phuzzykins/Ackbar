@@ -20,6 +20,7 @@ class AckbarBarrelMechanism : public AckbarMechanism
     TMC2209             * stepperDriver = nullptr;
     BasicStepperDriver  * stepperMotor  = nullptr;
 
+    void getDriverSettings();
     bool limitSwitchTriggered();
     bool seekLimit();
     void flip();

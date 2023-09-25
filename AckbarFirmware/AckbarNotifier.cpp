@@ -33,7 +33,7 @@ void AckbarNotifier::handleEvent(AckbarEvent * e)
       WiFiClient client;
       HTTPClient http;
 
-      String uri = "http://ntfy.sh/RAT_TRAP_";
+      String uri = "http://ntfy.sh/ACK_";
       uri += board_id;
 
       Serial.print("Notification URL: ");
