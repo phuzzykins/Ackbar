@@ -14,8 +14,20 @@ class AckbarEvent
       TRAP_EVENT,
       ERROR_EVENT,
       WIFI_CONNECTION_EVENT,
-      WIFI_DISCONNECTION_EVENT
+      WIFI_DISCONNECTION_EVENT,
+      LINK_EVENT
     };
+};
+
+class AckbarLinkEvent : public AckbarEvent
+{
+  public:
+    AckbarLinkEvent(String uri)
+    {
+      this->eventType = LINK_EVENT;
+      this->uri       = uri;
+    };
+    String uri;
 };
 
 class AckbarTrapEvent : public AckbarEvent

@@ -3,8 +3,6 @@
 
 #include "AckbarEventConsumer.h"
 
-#define BOARD_ID_LENGTH         16
-
 class AckbarNotifier : public AckbarEventConsumer
 {
   public:
@@ -14,7 +12,7 @@ class AckbarNotifier : public AckbarEventConsumer
     void handleEvent(AckbarEvent * e);
 
   private:
-   char board_id[BOARD_ID_LENGTH];
+   String uri;
 };
 
 

@@ -1,5 +1,6 @@
 #include "AckbarNotifier.h"
 #include "AckbarWifiConnection.h"
+#include "AckbarEventService.h"
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -19,7 +20,16 @@ void AckbarNotifier::calibrate()
 {
   String macAddress = WiFi.macAddress();
   macAddress.replace(":", "");
-  macAddress.toCharArray(board_id,   BOARD_ID_LENGTH);
+
+  uri = "http://ntfy.sh/ACK_" + macAddress;
+
+  Serial.print("Notification URL: ");
+  Serial.println(uri);
+
+  AckbarEventService s;
+  AckbarLinkEvent * e = new AckbarLinkEvent(uri);
+
+  s.publishEvent(e);
 }
 
 void AckbarNotifier::handleEvent(AckbarEvent * e)
@@ -32,12 +42,6 @@ void AckbarNotifier::handleEvent(AckbarEvent * e)
     {
       WiFiClient client;
       HTTPClient http;
-
-      String uri = "http://ntfy.sh/ACK_";
-      uri += board_id;
-
-      Serial.print("Notification URL: ");
-      Serial.println(uri);
 
       http.begin(client, uri);
 
