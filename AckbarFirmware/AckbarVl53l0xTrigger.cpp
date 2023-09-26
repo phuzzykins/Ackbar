@@ -64,16 +64,8 @@ void AckbarVl53l0xTrigger::calibrate()
   uint16_t min_variance = average_distance - min_distance;
   uint16_t max_variance = max_distance - average_distance;
 
-  if(min_variance > max_variance)
-  {
-    variance_mm = min_variance;
-  }
-  else
-  {
-    variance_mm = max_variance;
-  }
-
-  trigger_distance_mm = max_variance * 3;
+  variance_mm         = max(min_variance, max_variance);
+  trigger_distance_mm = variance_mm * 3;
 
   Serial.print("Minimum Sensor Distance: ");
   Serial.print(min_distance);

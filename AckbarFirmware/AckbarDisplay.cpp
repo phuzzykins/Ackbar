@@ -20,22 +20,18 @@ void AckbarDisplay::begin()
 {
   epdDevice = new GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT>(GxEPD2_154_D67(EPD_CS, EPD_DC, EPD_RESET, EPD_BUSY));
 
-  epdDevice->init(115200);
+  epdDevice->init();
   epdDevice->setRotation(3);
 
-  this->screenwidth   = epdDevice->width();
-  this->screenheight  = epdDevice->height();
+  screenwidth   = epdDevice->width();
+  screenheight  = epdDevice->height();
 
   epdDevice->setFullWindow();
   epdDevice->fillScreen(GxEPD_WHITE);
 
-  int min = screenwidth;
-  if(screenheight < screenwidth)
-  {
-    min = screenheight;
-  }
-        
-  multiply = min/WD;
+  int min_dimension = min(screenwidth, screenheight);
+
+  multiply = min_dimension/WD;
   offsetsX = (screenwidth-(WD*multiply))/2;
   offsetsY = (screenheight-(WD*multiply))/2;
 }
@@ -83,7 +79,7 @@ void AckbarDisplay::handleEvent(AckbarEvent * e)
     Serial.print("Display received Link Event: ");
     Serial.println(link->uri);
 
-    create(link->uri);
+    this->QRcodeDisplay::create(link->uri);
   }
 }
 
