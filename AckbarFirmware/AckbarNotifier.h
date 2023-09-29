@@ -13,6 +13,7 @@ class AckbarNotifier : public AckbarEventConsumer
 
   private:
    String uri;
+   int missedTrapNotifications = 0;
 };
 
 

@@ -13,7 +13,7 @@ char * AckbarNotifier::name()
 
 void AckbarNotifier::begin()
 {
-
+  missedTrapNotifications = 0;
 }
 
 void AckbarNotifier::calibrate()
@@ -21,7 +21,7 @@ void AckbarNotifier::calibrate()
   String macAddress = WiFi.macAddress();
   macAddress.replace(":", "");
 
-  uri = "http://ntfy.sh/ACK_" + macAddress;
+  uri = "https://ntfy.sh/ACK_" + macAddress;
 
   Serial.print("Notification URL: ");
   Serial.println(uri);
@@ -36,25 +36,42 @@ void AckbarNotifier::handleEvent(AckbarEvent * e)
 {
   if(e->eventType == e->TRAP_EVENT)
   {
+    missedTrapNotifications++;
     AckbarWifiConnection w(configuration);
 
     if(w.connect())
     {
-      WiFiClient client;
+      WiFiClientSecure client;
       HTTPClient http;
+
+      client.setInsecure();
 
       http.begin(client, uri);
 
       http.addHeader("Content-Type", "text/plain");
 
+      int missed = missedTrapNotifications - 1;
+
       String request("Notification From ");
       request += configuration->board_name;
       request += ": the trap was triggered!";
+
+      if(missed > 0)
+      {
+        request += " There were ";
+        request += missed;
+        request += " earlier triggers for which notifications could not be sent.";
+      }
 
       int response = http.POST(request);
 
       Serial.print("HTTP Response status code: ");
       Serial.println(response);
+
+      if(response == 200)
+      {
+        missedTrapNotifications = 0;
+      }
 
       http.end();
       client.stop();
