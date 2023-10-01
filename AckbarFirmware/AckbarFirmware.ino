@@ -2,6 +2,7 @@
 #include "AckbarStatusLED.h"
 #include "AckbarDisplay.h"
 #include "AckbarNotifier.h"
+#include "AckbarBLE.h"
 #include "AckbarVl53l0xTrigger.h"
 #include "AckbarBarrelMechanism.h"
 
@@ -9,6 +10,7 @@ Ackbar                  trap;
 AckbarStatusLED         led;
 AckbarDisplay           display;
 AckbarNotifier          notifier;
+AckbarBLE               ble;
 AckbarVl53l0xTrigger    trigger;
 AckbarBarrelMechanism   mechanism;
 
@@ -24,6 +26,7 @@ void setup()
   trap.addEventConsumer(&led);
   trap.addEventConsumer(&display);
   trap.addEventConsumer(&notifier);
+  trap.addEventConsumer(&ble);
   trap.addMechanism(&mechanism);
   trap.addTrigger(&trigger);
 
