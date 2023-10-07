@@ -5,6 +5,8 @@
 #include <FFat.h>
 #include <USB.h>
 
+#include <list>
+
 #define FFAT_SECTOR_SIZE 4096
 
 static void readFile(fs::FS &fs, const char * path){
@@ -265,18 +267,27 @@ void Ackbar::doWork(void)
 
     case STATE_STARTUP:
       {
-        int errors = 0;
+        std::list<String> failed_components;
         for(AckbarComponent * c : components)
         {
           Serial.printf("Starting Component: %s\n", c->name());
           if(! c->begin())
           {
-            Serial.printf("Component failed startup: %s\n", c->name());
-            errors++;
+            failed_components.push_back(c->name());
           }
         }
-        if(errors > 0)
+        if(failed_components.size() > 0)
         {
+          String msg = "Failed Startup: \n";
+          for(String cn : failed_components)
+          {
+            //msg += "* ";
+            msg += cn;
+            msg += "\n";
+          }
+          AckbarEventService s;
+          AckbarErrorEvent * e = new AckbarErrorEvent(msg);
+          s.publishEvent(e);
           changeState(STATE_ERROR);
         }
         else
@@ -288,18 +299,27 @@ void Ackbar::doWork(void)
 
     case STATE_CALIBRATING:
       {
-        int errors = 0;
+        std::list<String> failed_components;
         for(AckbarComponent * c : components)
         {
           Serial.printf("Calibrating Component: %s\n", c->name());
           if(! c->calibrate())
           {
-            Serial.printf("Component failed calibration: %s\n", c->name());
-            errors++;
+            failed_components.push_back(c->name());
           }
         }
-        if(errors > 0)
+        if(failed_components.size() > 0)
         {
+          String msg = "Failed Calibration:\n";
+          for(String cn : failed_components)
+          {
+            //msg += "* ";
+            msg += cn;
+            msg += "\n";
+          }
+          AckbarEventService s;
+          AckbarErrorEvent * e = new AckbarErrorEvent(msg);
+          s.publishEvent(e);
           changeState(STATE_ERROR);
         }
         else
@@ -344,6 +364,10 @@ void Ackbar::doWork(void)
         {
           Serial.printf("Activated by Trigger: %s\n", t->name());
           changeState(STATE_ACTIVE);
+        }
+        else
+        {
+          delay(50);
         }
       }
       break;

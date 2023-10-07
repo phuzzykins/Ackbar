@@ -2,7 +2,7 @@
 #include "AckbarPins.h"
 
 #include "qrencode.h"
-#include <Fonts/FreeSans18pt7b.h>
+#include <Fonts/FreeSans12pt7b.h>
 
 
 char * AckbarDisplay::name()
@@ -43,20 +43,16 @@ bool AckbarDisplay::calibrate()
   return true;
 }
 
-void AckbarDisplay::splashScreen()
+void AckbarDisplay::errorScreen(String msg)
 {
   epdDevice->setFullWindow();
   epdDevice->fillScreen(GxEPD_WHITE);
-  epdDevice->setFont(&FreeSans18pt7b);
-  epdDevice->setCursor(0, 18);
+  epdDevice->setFont(&FreeSans12pt7b);
   epdDevice->setTextColor(GxEPD_BLACK);
   epdDevice->setTextWrap(true);
-  epdDevice->setCursor(8, 30);
-  epdDevice->print("Ackbar v0.2:");
-  epdDevice->setCursor(8, 60);
-  epdDevice->print("It's a trap!");
-  epdDevice->setCursor(8, 90);
-  epdDevice->print(configuration->board_name);
+  epdDevice->setCursor(0, 18);
+  epdDevice->print(msg);
+
 
   epdDevice->display(false);
 }
@@ -69,10 +65,12 @@ void AckbarDisplay::handleEvent(AckbarEvent * e)
     return;
   }
 
-  if(e->eventType == e->STARTUP_EVENT)
+  if(e->eventType == e->ERROR_EVENT)
   {
-    Serial.println("Display received startup event");
-    //splashScreen();
+    AckbarErrorEvent * err = (AckbarErrorEvent *)e;
+    Serial.print("Display received ERROR event: ");
+    Serial.println(err->msg);
+    errorScreen(err->msg);
   }
   else if(e->eventType == e->LINK_EVENT)
   {

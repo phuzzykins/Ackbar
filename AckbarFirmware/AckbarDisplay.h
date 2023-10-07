@@ -17,7 +17,7 @@ class AckbarDisplay : public AckbarEventConsumer, public QRcodeDisplay
 		void screenupdate();
 
   private:
-    void splashScreen();
+    void errorScreen(String msg);
     void drawPixel(int x, int y, int color);
     GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT> *epdDevice = nullptr;
 };

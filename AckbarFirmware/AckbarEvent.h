@@ -42,10 +42,12 @@ class AckbarTrapEvent : public AckbarEvent
 class AckbarErrorEvent : public AckbarEvent
 {
   public:
-    AckbarErrorEvent()
+    AckbarErrorEvent(String msg)
     {
-      eventType = ERROR_EVENT;
+      this->eventType = ERROR_EVENT;
+      this->msg       = msg;
     };
+    String msg;
 };
 
 class AckbarStateChangeEvent : public AckbarEvent

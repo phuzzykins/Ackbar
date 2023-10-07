@@ -28,7 +28,7 @@ void AckbarEventService::eventThreadFunction()
 
     if(e == nullptr)
     {
-      delay(10);
+      delay(100);
     }
     else
     {
