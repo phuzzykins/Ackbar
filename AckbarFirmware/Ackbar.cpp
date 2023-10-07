@@ -264,27 +264,54 @@ void Ackbar::doWork(void)
       break;
 
     case STATE_STARTUP:
-      for(AckbarComponent * c : components)
       {
-        Serial.printf("Starting Component: %s\n", c->name());
-        c->begin();
+        int errors = 0;
+        for(AckbarComponent * c : components)
+        {
+          Serial.printf("Starting Component: %s\n", c->name());
+          if(! c->begin())
+          {
+            Serial.printf("Component failed startup: %s\n", c->name());
+            errors++;
+          }
+        }
+        if(errors > 0)
+        {
+          changeState(STATE_ERROR);
+        }
+        else
+        {
+          changeState(STATE_CALIBRATING);
+        }
       }
-      changeState(STATE_CALIBRATING);
       break;
 
     case STATE_CALIBRATING:
-      for(AckbarComponent * c : components)
       {
-        Serial.printf("Calibrating Component: %s\n", c->name());
-        c->calibrate();
+        int errors = 0;
+        for(AckbarComponent * c : components)
+        {
+          Serial.printf("Calibrating Component: %s\n", c->name());
+          if(! c->calibrate())
+          {
+            Serial.printf("Component failed calibration: %s\n", c->name());
+            errors++;
+          }
+        }
+        if(errors > 0)
+        {
+          changeState(STATE_ERROR);
+        }
+        else
+        {
+          changeState(STATE_ARMING);
+          {
+            AckbarEventService s;
+            AckbarStartupEvent * e = new AckbarStartupEvent();
+            s.publishEvent(e);
+          };
+        }
       }
-      changeState(STATE_ARMING);
-      {
-        AckbarEventService s;
-        AckbarStartupEvent * e = new AckbarStartupEvent();
-        s.publishEvent(e);
-      };
-
       break;
 
     case STATE_ARMING:

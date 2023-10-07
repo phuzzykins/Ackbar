@@ -10,8 +10,8 @@ class AckbarDisplay : public AckbarEventConsumer, public QRcodeDisplay
   public:
     ~AckbarDisplay();
     char * name();
-    void begin();
-    void calibrate();
+    bool begin();
+    bool calibrate();
     void handleEvent(AckbarEvent * e);
 		void screenwhite();
 		void screenupdate();

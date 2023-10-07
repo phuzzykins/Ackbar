@@ -132,7 +132,7 @@ void AckbarBarrelMechanism::getDriverSettings()
   Serial.println();
 }
 
-void AckbarBarrelMechanism::begin()
+bool AckbarBarrelMechanism::begin()
 {
   if(stepperMotor == nullptr)
   {
@@ -173,6 +173,7 @@ void AckbarBarrelMechanism::begin()
   else
   {
     Serial.println("!!! Stepper driver is not setup and communicating");
+    return false;
   }
   
 
@@ -186,6 +187,8 @@ void AckbarBarrelMechanism::begin()
   );
 
   stepperMotor->disable();
+
+  return true;
 }
 
 bool AckbarBarrelMechanism::limitSwitchTriggered()
@@ -226,8 +229,13 @@ void AckbarBarrelMechanism::reset()
   flip();
 }
 
-void AckbarBarrelMechanism::calibrate()
+bool AckbarBarrelMechanism::calibrate()
 {
-  seekLimit();
+  if(! seekLimit())
+  {
+    Serial.println("Failed to reach limit switch after commanded 360 degree rotation");
+    return false;
+  }
   flip();
+  return true;
 }

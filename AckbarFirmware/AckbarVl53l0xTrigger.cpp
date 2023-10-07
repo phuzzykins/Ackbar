@@ -8,7 +8,7 @@ char * AckbarVl53l0xTrigger::name()
   return("Laser Time-of-Flight Trigger");
 }
 
-void AckbarVl53l0xTrigger::begin()
+bool AckbarVl53l0xTrigger::begin()
 {
   Wire.begin();
 
@@ -24,10 +24,15 @@ void AckbarVl53l0xTrigger::begin()
   if(device.init())
   {
     device.setMeasurementTimingBudget(configuration->tof_timing_budget_us);
+    return true;
+  }
+  else
+  {
+    return false;
   }
 }
 
-void AckbarVl53l0xTrigger::calibrate()
+bool AckbarVl53l0xTrigger::calibrate()
 {
   uint16_t min_distance   = -1;
   uint16_t max_distance   = 0;
@@ -41,6 +46,7 @@ void AckbarVl53l0xTrigger::calibrate()
     if(device.timeoutOccurred())
     {
       Serial.println("Timeout");
+      return false;
     }
     else
     {
@@ -86,6 +92,8 @@ void AckbarVl53l0xTrigger::calibrate()
   Serial.print("Trigger Distance: ");
   Serial.print(trigger_distance_mm);
   Serial.println(" mm");
+
+  return true;
 }
 
 bool AckbarVl53l0xTrigger::isReady()

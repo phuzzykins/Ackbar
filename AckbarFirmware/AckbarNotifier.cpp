@@ -11,12 +11,13 @@ char * AckbarNotifier::name()
 }
 
 
-void AckbarNotifier::begin()
+bool AckbarNotifier::begin()
 {
   missedTrapNotifications = 0;
+  return true;
 }
 
-void AckbarNotifier::calibrate()
+bool AckbarNotifier::calibrate()
 {
   String macAddress = WiFi.macAddress();
   macAddress.replace(":", "");
@@ -30,6 +31,8 @@ void AckbarNotifier::calibrate()
   AckbarLinkEvent * e = new AckbarLinkEvent(uri);
 
   s.publishEvent(e);
+
+  return true;
 }
 
 void AckbarNotifier::handleEvent(AckbarEvent * e)

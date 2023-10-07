@@ -11,8 +11,8 @@ class AckbarBarrelMechanism : public AckbarMechanism
   public:
     ~AckbarBarrelMechanism();
     char * name();
-    void begin();
-    void calibrate();
+    bool begin();
+    bool calibrate();
     void activate();
     void reset();
 

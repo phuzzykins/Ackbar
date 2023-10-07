@@ -7,8 +7,8 @@ class AckbarComponent
 {
   public:
     virtual char * name() = 0;
-    virtual void begin() = 0;
-    virtual void calibrate() = 0;
+    virtual bool begin() = 0;
+    virtual bool calibrate() = 0;
 
     void setConfiguration(AckbarConfiguration * c)
     {

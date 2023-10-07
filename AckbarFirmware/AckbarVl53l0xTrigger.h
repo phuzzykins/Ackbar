@@ -8,8 +8,8 @@ class AckbarVl53l0xTrigger : public AckbarTrigger
 {
   public:
     char * name();
-    void begin();
-    void calibrate();
+    bool begin();
+    bool calibrate();
     bool isReady();
     bool isTriggered();
 

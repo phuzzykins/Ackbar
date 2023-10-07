@@ -3,13 +3,24 @@
 #include <BLEUtils.h>
 
 
+AckbarBLE::AckbarBLE()
+{
+  deliverEventsSynchronously = true;
+  triggerCount = 0;
+}
+
+AckbarBLE::~AckbarBLE()
+{
+
+}
+
 char * AckbarBLE::name()
 {
   return("Bluetooth Low Energy");
 }
 
 
-void AckbarBLE::begin()
+bool AckbarBLE::begin()
 {
   BLEDevice::init(configuration->board_name);
 
@@ -23,6 +34,14 @@ void AckbarBLE::begin()
 
   characteristics[ACKBAR_BLE_CHARACTERISTIC_BOARD_NAME]->setValue(configuration->board_name);
 
+  characteristics[ACKBAR_BLE_CHARACTERISTIC_TRIGGER_COUNT] = pService->createCharacteristic(
+    ACKBAR_BLE_CHARACTERISTIC_TRIGGER_COUNT,
+    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY
+  );
+
+  characteristics[ACKBAR_BLE_CHARACTERISTIC_TRIGGER_COUNT]->setValue(triggerCount);
+
+
   pService->start();
 
   pAdvertising = BLEDevice::getAdvertising();
@@ -33,14 +52,21 @@ void AckbarBLE::begin()
   pAdvertising->setMinPreferred(0x12);
 
   BLEDevice::startAdvertising();
+
+  return true;
 }
 
-void AckbarBLE::calibrate()
+bool AckbarBLE::calibrate()
 {
-
+  return true;
 }
 
 void AckbarBLE::handleEvent(AckbarEvent * e)
 {
-
+  if(e->eventType == e->TRAP_EVENT)
+  {
+    triggerCount++;
+    characteristics[ACKBAR_BLE_CHARACTERISTIC_TRIGGER_COUNT]->setValue(triggerCount);
+    characteristics[ACKBAR_BLE_CHARACTERISTIC_TRIGGER_COUNT]->notify();
+  }
 }

@@ -12,8 +12,8 @@ class AckbarStatusLED : public AckbarEventConsumer
     AckbarStatusLED();
     ~AckbarStatusLED();
     char * name();
-    void begin();
-    void calibrate();
+    bool begin();
+    bool calibrate();
     void handleEvent(AckbarEvent * e);
 
   private:

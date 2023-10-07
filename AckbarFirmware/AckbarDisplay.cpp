@@ -16,7 +16,7 @@ AckbarDisplay::~AckbarDisplay()
 }
 
 
-void AckbarDisplay::begin()
+bool AckbarDisplay::begin()
 {
   epdDevice = new GxEPD2_BW<GxEPD2_154_D67, GxEPD2_154_D67::HEIGHT>(GxEPD2_154_D67(EPD_CS, EPD_DC, EPD_RESET, EPD_BUSY));
 
@@ -34,11 +34,13 @@ void AckbarDisplay::begin()
   multiply = min_dimension/WD;
   offsetsX = (screenwidth-(WD*multiply))/2;
   offsetsY = (screenheight-(WD*multiply))/2;
+
+  return true;
 }
 
-void AckbarDisplay::calibrate()
+bool AckbarDisplay::calibrate()
 {
-
+  return true;
 }
 
 void AckbarDisplay::splashScreen()
