@@ -109,7 +109,7 @@ bool AckbarVl53l0xTrigger::isReady()
   }
   else
   {
-    if(distance_mm > (nominal_distance_mm + variance_mm * 1.5))
+    if(distance_mm > (nominal_distance_mm + variance_mm * 2))
     {
       Serial.print("Sensor distance out of range: ");
       Serial.print(distance_mm);
@@ -135,7 +135,7 @@ bool AckbarVl53l0xTrigger::isReady()
 
 bool AckbarVl53l0xTrigger::isTriggered()
 {
- uint16_t distance_mm = device.readRangeSingleMillimeters();
+  uint16_t distance_mm = device.readRangeSingleMillimeters();
 
   if(device.timeoutOccurred())
   {

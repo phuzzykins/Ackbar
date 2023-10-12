@@ -7,6 +7,17 @@
 AckbarStatusLED::AckbarStatusLED()
 {
   deliverEventsSynchronously = true;
+  
+  pixels = new Adafruit_NeoPixel(1, RGB_BUILTIN, NEO_RGB + NEO_KHZ800);
+
+  stateToColor[STATE_RESET]       = pixels->Color(255, 255, 255);
+  stateToColor[STATE_ERROR]       = pixels->Color(255, 0, 0);
+  stateToColor[STATE_STARTUP]     = pixels->Color(64, 0, 64);
+  stateToColor[STATE_CALIBRATING] = pixels->Color(0, 0, 64);
+  stateToColor[STATE_ARMING]      = pixels->Color(64, 64, 0);
+  stateToColor[STATE_ARMED]       = pixels->Color(0, 64, 0);
+  stateToColor[STATE_ACTIVE]      = pixels->Color(64, 64, 64);
+
 }
 
 AckbarStatusLED::~AckbarStatusLED()
@@ -25,15 +36,6 @@ char * AckbarStatusLED::name()
 
 bool AckbarStatusLED::begin()
 {
-  pixels = new Adafruit_NeoPixel(1, RGB_BUILTIN, NEO_RGB + NEO_KHZ800);
-
-  stateToColor[STATE_RESET]       = pixels->Color(255, 255, 255);
-  stateToColor[STATE_ERROR]       = pixels->Color(255, 0, 0);
-  stateToColor[STATE_STARTUP]     = pixels->Color(64, 0, 64);
-  stateToColor[STATE_CALIBRATING] = pixels->Color(0, 0, 64);
-  stateToColor[STATE_ARMING]      = pixels->Color(64, 64, 0);
-  stateToColor[STATE_ARMED]       = pixels->Color(0, 64, 0);
-  stateToColor[STATE_ACTIVE]      = pixels->Color(64, 64, 64);
 
   return true;
 }

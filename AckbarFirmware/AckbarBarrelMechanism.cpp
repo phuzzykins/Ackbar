@@ -186,6 +186,14 @@ bool AckbarBarrelMechanism::begin()
     configuration->motor_deceleration * STEPPER_STEPS_PER_REV
   );
 
+  //stepperDriver->enableInverseMotorDirection();
+  //stepperDriver->moveAtVelocity(STEPPER_MICROSTEPS * STEPPER_STEPS_PER_REV);
+
+  //while(true)
+  //{
+  //  delay(1000);
+  //}
+
   stepperMotor->disable();
 
   return true;
