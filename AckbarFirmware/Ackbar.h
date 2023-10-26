@@ -46,6 +46,10 @@ class Ackbar
     char stateToString[STATE_LAST][32];
 
     void changeState(AckbarState s);
+
+    bool delayingTrap = false;
+    uint32_t startDelayTime = 0xFFFFFFFF;
+    uint32_t endDelayTime = 0xFFFFFFFF;
 };
 
 

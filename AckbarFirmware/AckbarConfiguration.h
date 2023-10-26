@@ -24,6 +24,7 @@ class AckbarConfiguration
     uint16_t  motor_steps_per_rev;
 	  uint32_t  tof_timing_budget_us;
     uint16_t  trap_dwell_time_ms;
+    uint16_t  trap_delay_time_ms;
 	  char      wifi_ssid[WIFI_SSID_LENGTH];
 	  char      wifi_password[WIFI_PASSWORD_LENGTH];
 	  uint32_t  wifi_timeout_ms;

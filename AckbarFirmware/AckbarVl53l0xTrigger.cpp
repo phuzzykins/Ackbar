@@ -143,19 +143,11 @@ bool AckbarVl53l0xTrigger::isTriggered()
   }
   else
   {
-    if(distance_mm < ANT_DETECTION_THRESHHOLD)
+    if((distance_mm > ANT_DETECTION_THRESHHOLD) && (distance_mm < (nominal_distance_mm - trigger_distance_mm)))
     {
-      consecutiveReadings = 0;
-    }
-    else if(distance_mm < (nominal_distance_mm - trigger_distance_mm))
-    {
-      consecutiveReadings++;
-    }
-    else
-    {
-      consecutiveReadings = 0;
+      return true;
     }
   }
 
-  return(consecutiveReadings > 2);
+  return false;
 }

@@ -9,6 +9,7 @@ AckbarConfiguration::AckbarConfiguration()
   motor_deceleration       = 8;
   tof_timing_budget_us     = 50000;
   trap_dwell_time_ms       = 5000;
+  trap_delay_time_ms       = 5000;
   wifi_timeout_ms          = 60000;
   require_wifi             = false;
   require_gnss             = false;
@@ -60,6 +61,7 @@ void AckbarConfiguration::fromStream(Stream& config)
   motor_deceleration     = doc["motor_deceleration"];
   tof_timing_budget_us   = doc["tof_timing_budget_us"];
   trap_dwell_time_ms     = doc["trap_dwell_time_ms"];
+  trap_delay_time_ms     = doc["trap_delay_time_ms"];
   wifi_timeout_ms        = doc["wifi_timeout_ms"];
   home_latitude          = doc["home_latitude"];
   home_longitude         = doc["home_longitude"];

@@ -362,11 +362,29 @@ void Ackbar::doWork(void)
       {
         if(t->isTriggered())
         {
-          Serial.printf("Activated by Trigger: %s\n", t->name());
-          changeState(STATE_ACTIVE);
+          if(! delayingTrap)
+          {
+            delayingTrap = true;
+            startDelayTime = millis();
+            endDelayTime = startDelayTime + configuration.trap_delay_time_ms;
+            Serial.printf("Activated by Trigger: %s, delay %d ms\n", t->name(), configuration.trap_delay_time_ms);
+          }
+
+          if(millis() >= endDelayTime)
+          {
+            Serial.printf("Starting trap after %d ms delay\n", configuration.trap_delay_time_ms);
+            delayingTrap = false;
+            changeState(STATE_ACTIVE);
+          }
         }
         else
         {
+          if(delayingTrap)
+          {
+            Serial.printf("Trigger deactivated during delay period: %s\n", t->name());
+            delayingTrap = false;
+          }
+          
           delay(50);
         }
       }

@@ -4,6 +4,7 @@
   "motor_acceleration": 8,
   "motor_deceleration": 8,
   "trap_dwell_time_ms" : 5000,
+  "trap_delay_time_ms" : 10000,
   "tof_timing_budget_us": 50000,
   "wifi_ssid": "",
   "wifi_password": "",
